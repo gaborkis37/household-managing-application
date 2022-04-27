@@ -10,8 +10,8 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 class RestExceptionHandler: ResponseEntityExceptionHandler() {
 
-    @ExceptionHandler(value = [ProductNotFoundException::class])
-    fun handleProductNotFoundException(ex: ProductNotFoundException): ResponseEntity<ApiError> {
+    @ExceptionHandler(value = [ProductNotFoundException::class, HouseholdNotFoundException::class])
+    fun handleNotFoundExceptions(ex: NotFoundException): ResponseEntity<ApiError> {
         val apiError = ApiError(httpStatus = HttpStatus.NOT_FOUND, msg = ex.message)
 
         return buildResponseEntity(apiError)

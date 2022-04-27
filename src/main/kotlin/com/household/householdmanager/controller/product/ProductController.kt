@@ -24,7 +24,7 @@ class ProductController(
     }
 
     @PostMapping("")
-    fun create(@RequestBody productDTO: ProductDTO): Product {
+    fun save(@RequestBody productDTO: ProductDTO): Product {
         return productService.save(productDTO)
     }
 

@@ -1,4 +1,4 @@
 package com.household.householdmanager.exception
 
-class ProductNotFoundException(msg: String): Exception(msg) {
+class ProductNotFoundException(msg: String): NotFoundException(msg) {
 }
