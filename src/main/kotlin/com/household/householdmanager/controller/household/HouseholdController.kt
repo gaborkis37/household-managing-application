@@ -1,6 +1,7 @@
 package com.household.householdmanager.controller.household
 
 import com.household.householdmanager.dto.HouseholdDTO
+import com.household.householdmanager.dto.ProductDTO
 import com.household.householdmanager.model.Household
 import com.household.householdmanager.service.HouseholdService
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -26,6 +27,11 @@ class HouseholdController(
     @PostMapping("")
     fun save(@RequestBody householdDTO: HouseholdDTO): Household {
         return householdService.save(householdDTO)
+    }
+
+    @PostMapping("/{id}/product")
+    fun addProductToHousehold(@RequestBody productDTO: ProductDTO, @PathVariable id: Long): Household {
+        return householdService.addProductToHousehold(productDTO, id)
     }
 
     @GetMapping("/{id}")

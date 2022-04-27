@@ -14,6 +14,6 @@ data class Household (
     val name: String,
     val type: String,
     @OneToMany(cascade = [CascadeType.ALL])
-    val products: Set<Product>?,
+    val products: Set<Product>? = emptySet(),
     val image: String
 )

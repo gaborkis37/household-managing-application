@@ -1,7 +1,9 @@
 package com.household.householdmanager.service
 
 import com.household.householdmanager.dto.HouseholdDTO
+import com.household.householdmanager.dto.ProductDTO
 import com.household.householdmanager.exception.HouseholdNotFoundException
+import com.household.householdmanager.mapper.ProductDTOToProductMapper
 import com.household.householdmanager.model.Household
 import com.household.householdmanager.repository.HouseholdRepository
 import org.springframework.stereotype.Service
@@ -20,6 +22,20 @@ class HouseholdService(
         )
 
         return householdRepository.save(household)
+    }
+
+    fun addProductToHousehold(productDTO: ProductDTO, householdId: Long): Household {
+        return householdRepository
+            .findById(householdId)
+            .map { household ->
+                val updatedProducts = household.products?.toMutableSet()?.plus(ProductDTOToProductMapper.map(productDTO))
+                val updatedHousehold = household.copy(
+                    products = updatedProducts
+                )
+
+                householdRepository.save(updatedHousehold)
+            }
+            .orElseThrow { HouseholdNotFoundException("Household not found with the given id.") }
     }
 
     fun findAll(): List<Household> {
