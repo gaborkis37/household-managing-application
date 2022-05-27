@@ -14,8 +14,6 @@ data class Product(
     var name: String,
     val quantity: Int,
     val image: String,
-    val type: String,
-    @OneToOne(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
-    @JoinColumn(name="price_id")
-    val price: Price
+    @Enumerated
+    val type: ProductType
 )

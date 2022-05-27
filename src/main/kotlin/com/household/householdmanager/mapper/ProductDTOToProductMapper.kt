@@ -10,8 +10,7 @@ class ProductDTOToProductMapper {
                 name = productDTO.name,
                 type = productDTO.type,
                 quantity = productDTO.quantity,
-                price = productDTO.price,
-                image = productDTO.image
+                image = productDTO.image,
             )
         }
     }

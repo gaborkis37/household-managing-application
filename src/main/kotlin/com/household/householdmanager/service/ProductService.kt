@@ -14,7 +14,6 @@ class ProductService(
     fun save(productDTO: ProductDTO): Product {
         val product = Product(
             name = productDTO.name,
-            price = productDTO.price,
             image = productDTO.image,
             quantity = productDTO.quantity,
             type = productDTO.type
@@ -36,7 +35,6 @@ class ProductService(
             val updatedProduct = product.copy(
                 name = productDTO.name,
                 quantity = productDTO.quantity,
-                price = productDTO.price,
                 image = productDTO.image,
                 type = productDTO.type
             )
