@@ -1,20 +1,19 @@
 package com.household.householdmanager.bootstrap
 
-import com.household.householdmanager.model.ERole
-import com.household.householdmanager.model.Product
-import com.household.householdmanager.model.ProductType
-import com.household.householdmanager.model.Role
+import com.household.householdmanager.model.*
 import com.household.householdmanager.repository.ProductRepository
 import com.household.householdmanager.repository.RoleRepository
+import com.household.householdmanager.repository.UserRepository
 import org.springframework.boot.ApplicationRunner
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.security.crypto.password.PasswordEncoder
 
 @Configuration
 class Bootstrap {
 
     @Bean
-    fun databaseInitializer(productRepository: ProductRepository, roleRepository: RoleRepository) = ApplicationRunner {
+    fun databaseInitializer(productRepository: ProductRepository, roleRepository: RoleRepository, userRepository: UserRepository, passwordEncoder: PasswordEncoder) = ApplicationRunner {
         val product1 = Product(name = "Apple", quantity = 5, image = "https://thumbs.dreamstime.com/b/red-apple-isolated-clipping-path-19130134.jpg", type = ProductType.FRUIT)
         val product2 = Product(name = "Banana", quantity = 5, image = "https://th-thumbnailer.cdn-si-edu.com/4Nq8HbTKgX6djk07DqHqRsRuFq0=/1000x750/filters:no_upscale()/https://tf-cmsv2-smithsonianmag-media.s3.amazonaws.com/filer/d5/24/d5243019-e0fc-4b3c-8cdb-48e22f38bff2/istock-183380744.jpg", type = ProductType.FRUIT)
         val product3 = Product(name = "Tomato", quantity = 10, image = "https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Bright_red_tomato_and_cross_section02.jpg/800px-Bright_red_tomato_and_cross_section02.jpg", type = ProductType.VEGETABLE)
@@ -56,5 +55,16 @@ class Bootstrap {
 
         roleRepository.save(userRole)
         roleRepository.save(adminRole)
+
+        val adminUser = User(
+            firstName = "Admin",
+            lastName = "Admin",
+            email = "admin@gmail.com",
+            image = "adminimage",
+            passWord = passwordEncoder.encode("admin"),
+            roles = setOf(userRole, adminRole)
+        )
+
+        userRepository.save(adminUser)
     }
 }
