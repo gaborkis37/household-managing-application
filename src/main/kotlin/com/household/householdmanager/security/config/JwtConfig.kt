@@ -7,5 +7,6 @@ import org.springframework.stereotype.Component
 @ConfigurationProperties(prefix = "jwt")
 data class JwtConfig(
     var secret: String = "",
-    var expirationMs: Int = 0
+    var expirationMs: Int = 0,
+    var authoritiesKey: String = ""
 )

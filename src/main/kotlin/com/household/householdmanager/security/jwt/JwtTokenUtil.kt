@@ -11,8 +11,10 @@ import io.jsonwebtoken.UnsupportedJwtException
 import org.slf4j.LoggerFactory
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.security.core.Authentication
+import org.springframework.security.core.GrantedAuthority
 import org.springframework.stereotype.Component
 import java.util.*
+import java.util.stream.Collectors
 
 @Component
 class JwtTokenUtil(
@@ -22,9 +24,14 @@ class JwtTokenUtil(
 
     fun generateJwtToken(authentication: Authentication): String {
         val userDetailsImpl: UserDetailsImpl = authentication.principal as UserDetailsImpl
+        val authorities = userDetailsImpl.authorities
+            .stream()
+            .map(GrantedAuthority::getAuthority)
+            .collect(Collectors.joining(","))
 
         return Jwts.builder()
             .setSubject(userDetailsImpl.email)
+            .claim(jwtConfig.authoritiesKey, authorities)
             .setIssuedAt(Date())
             .setExpiration(Date(Date().time + jwtConfig.expirationMs))
             .signWith(SignatureAlgorithm.HS256, jwtConfig.secret)
