@@ -6,6 +6,7 @@ import com.household.householdmanager.security.jwt.JwtTokenUtil
 import com.household.householdmanager.service.UserDetailsServiceImpl
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.http.HttpMethod
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
@@ -55,6 +56,7 @@ class WebSecurityConfig(
         http?.cors()?.and()?.csrf()?.disable()
             ?.exceptionHandling()?.authenticationEntryPoint(unauthorizedHandler)?.and()
             ?.sessionManagement()?.sessionCreationPolicy(SessionCreationPolicy.STATELESS)?.and()
+            ?.authorizeRequests()?.antMatchers(HttpMethod.GET,"/api/v1/products/**")?.permitAll()?.and()
             ?.authorizeRequests()?.antMatchers("/api/v1/products/**")?.hasRole("ADMIN")?.and()
             ?.authorizeRequests()?.antMatchers("/api/auth/**")?.permitAll()
             ?.anyRequest()?.authenticated()
