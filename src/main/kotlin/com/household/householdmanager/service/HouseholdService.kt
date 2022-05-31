@@ -5,6 +5,7 @@ import com.household.householdmanager.dto.ProductDTO
 import com.household.householdmanager.exception.HouseholdNotFoundException
 import com.household.householdmanager.mapper.ProductDTOToProductMapper
 import com.household.householdmanager.model.Household
+import com.household.householdmanager.model.Product
 import com.household.householdmanager.repository.HouseholdRepository
 import org.springframework.stereotype.Service
 
@@ -13,22 +14,15 @@ class HouseholdService(
     private val householdRepository: HouseholdRepository
 ) {
 
-    fun save(householdDTO: HouseholdDTO): Household {
-        val household = Household(
-            name = householdDTO.name,
-            image = householdDTO.image,
-            products = householdDTO.products,
-            type = householdDTO.type
-        )
-
+    fun save(household: Household): Household {
         return householdRepository.save(household)
     }
 
-    fun addProductToHousehold(productDTO: ProductDTO, householdId: Long): Household {
+    fun addProductToHousehold(product: Product, householdId: Long): Household {
         return householdRepository
             .findById(householdId)
             .map { household ->
-                val updatedProducts = household.products?.toMutableSet()?.plus(ProductDTOToProductMapper.map(productDTO))
+                val updatedProducts = household.products?.toMutableSet()?.plus(product)
                 val updatedHousehold = household.copy(
                     products = updatedProducts
                 )
@@ -46,14 +40,14 @@ class HouseholdService(
         return householdRepository.findById(id).orElseThrow { HouseholdNotFoundException("Household not found with the given id.") }
     }
 
-    fun update(householdDTO: HouseholdDTO, id: Long): Household {
+    fun update(household: Household, id: Long): Household {
         return householdRepository.findById(id)
             .map { household ->
                 val newHousehold = household.copy(
-                    name = householdDTO.name,
-                    type = householdDTO.type,
-                    image = householdDTO.image,
-                    products = householdDTO.products
+                    name = household.name,
+                    type = household.type,
+                    image = household.image,
+                    products = household.products
                 )
 
                 householdRepository.save(newHousehold)

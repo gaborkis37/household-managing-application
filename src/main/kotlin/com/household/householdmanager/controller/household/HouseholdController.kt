@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import javax.validation.Valid
 
 @RestController
 @RequestMapping("/api/v1/households")
@@ -25,13 +26,13 @@ class HouseholdController(
     }
 
     @PostMapping("")
-    fun save(@RequestBody householdDTO: HouseholdDTO): Household {
-        return householdService.save(householdDTO)
+    fun save(@RequestBody @Valid householdDTO: HouseholdDTO): Household {
+        return householdService.save(householdDTO.toHousehold())
     }
 
     @PostMapping("/{id}/product")
-    fun addProductToHousehold(@RequestBody productDTO: ProductDTO, @PathVariable id: Long): Household {
-        return householdService.addProductToHousehold(productDTO, id)
+    fun addProductToHousehold(@RequestBody @Valid productDTO: ProductDTO, @PathVariable id: Long): Household {
+        return householdService.addProductToHousehold(productDTO.toProduct(), id)
     }
 
     @GetMapping("/{id}")
@@ -40,8 +41,8 @@ class HouseholdController(
     }
 
     @PutMapping("/{id}")
-    fun update(@RequestBody householdDTO: HouseholdDTO, @PathVariable id: Long): Household {
-        return householdService.update(householdDTO, id)
+    fun update(@RequestBody @Valid householdDTO: HouseholdDTO, @PathVariable id: Long): Household {
+        return householdService.update(householdDTO.toHousehold(), id)
     }
 
     @DeleteMapping("/{id}")

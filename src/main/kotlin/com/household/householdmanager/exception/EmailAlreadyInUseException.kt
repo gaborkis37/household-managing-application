@@ -1,4 +1,4 @@
 package com.household.householdmanager.exception
 
-class EmailAlreadyInUseException(msg: String): Exception(msg){
+class EmailAlreadyInUseException(msg: String): BadRequestException(msg){
 }

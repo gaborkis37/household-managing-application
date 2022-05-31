@@ -11,7 +11,7 @@ data class Product(
     @Id
     @GeneratedValue
     val id: Long? = null,
-    var name: String,
+    val name: String,
     val quantity: Int,
     val image: String,
     @Enumerated

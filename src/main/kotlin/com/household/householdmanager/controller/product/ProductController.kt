@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import javax.validation.Valid
 
 @RestController
 @RequestMapping("/api/v1/products")
@@ -24,8 +25,8 @@ class ProductController(
     }
 
     @PostMapping("")
-    fun save(@RequestBody productDTO: ProductDTO): Product {
-        return productService.save(productDTO)
+    fun save(@Valid @RequestBody productDTO: ProductDTO): Product {
+        return productService.save(productDTO.toProduct())
     }
 
     @GetMapping("/{id}")
@@ -34,8 +35,8 @@ class ProductController(
     }
 
     @PutMapping("/{id}")
-    fun update(@RequestBody productDTO: ProductDTO, @PathVariable id: Long): Product {
-        return productService.update(productDTO, id)
+    fun update(@Valid @RequestBody productDTO: ProductDTO, @PathVariable id: Long): Product {
+        return productService.update(productDTO.toProduct(), id)
     }
 
     @DeleteMapping("/{id}")

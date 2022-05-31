@@ -1,6 +1,5 @@
 package com.household.householdmanager.service
 
-import com.household.householdmanager.dto.ProductDTO
 import com.household.householdmanager.exception.ProductNotFoundException
 import com.household.householdmanager.model.Product
 import com.household.householdmanager.repository.ProductRepository
@@ -11,14 +10,7 @@ class ProductService(
     private val productRepository: ProductRepository
 ) {
 
-    fun save(productDTO: ProductDTO): Product {
-        val product = Product(
-            name = productDTO.name,
-            image = productDTO.image,
-            quantity = productDTO.quantity,
-            type = productDTO.type
-        )
-
+    fun save(product: Product): Product {
         return productRepository.save(product)
     }
 
@@ -30,13 +22,13 @@ class ProductService(
         return productRepository.findById(id).orElseThrow { ProductNotFoundException("No product found with the given id.") }
     }
 
-    fun update(productDTO: ProductDTO, id: Long): Product {
-        return productRepository.findById(id).map { product ->
-            val updatedProduct = product.copy(
-                name = productDTO.name,
-                quantity = productDTO.quantity,
-                image = productDTO.image,
-                type = productDTO.type
+    fun update(product: Product, id: Long): Product {
+        return productRepository.findById(id).map { currentProduct ->
+            val updatedProduct = currentProduct.copy(
+                name = product.name,
+                quantity = product.quantity,
+                image = product.image,
+                type = product.type
             )
 
             productRepository.save(updatedProduct)
